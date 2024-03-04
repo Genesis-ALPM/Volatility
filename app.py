@@ -113,7 +113,7 @@ def visualize(selected_pool, data, lookback, selected_price, vol_name):
     scatter_trace = go.Scatter(x=data.index, 
                            y=data[selected_price], 
                            mode='markers', 
-                           marker=dict(symbol='circle', color='blue', size=data[vol_name]*10),
+                           marker=dict(symbol='circle', color='blue', size=abs(data[vol_name])*10),
                            hoverinfo='text',
                            text=[f"{vol_name}: {vol}" for vol in data[vol_name]],
                            name=f"{vol_name} Volatility",

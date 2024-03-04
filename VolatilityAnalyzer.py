@@ -29,12 +29,12 @@ class VolatilityAnalyzer:
         data = data.sort_index()
 
         # Apply the rolling window calculation
-        data['Statistical_unscaled'] = data[selected_price].rolling(window=lookback).apply(self.calculate_volatility, raw=False)
+        data['Statistical'] = data[selected_price].rolling(window=lookback).apply(self.calculate_volatility, raw=False)
 
         data = data.dropna()
         data = data.copy()
 
-        data['Statistical'] = MinMaxScaler().fit_transform(data[['Statistical_unscaled']])
+        #data['Statistical'] = MinMaxScaler().fit_transform(data[['Statistical_unscaled']])
         print('STATISTICAL VOLATILITY')
         print(data.head())
         print('................................................')
@@ -72,11 +72,14 @@ class VolatilityAnalyzer:
         data = data.sort_index()
 
         # Apply the rolling window calculation
-        data['Spectral_unscaled'] = data[selected_price].rolling(window=lookback).apply(self.calculate_spectral_volatility, raw=False)
+        data['PDS'] = data[selected_price].rolling(window=lookback).apply(self.calculate_spectral_volatility, raw=False)
+        
+        # Calculate PDS ratio
+        data['Spectral'] = data['PDS'].pct_change() -1  # (current PDS Ratio)/(previous PDS Ratio) - 1
 
         data = data.dropna()
         data = data.copy()
-        data['Spectral'] = MinMaxScaler().fit_transform(data[['Spectral_unscaled']])
+        #data['Spectral'] = MinMaxScaler().fit_transform(data[['Spectral_unscaled']])
 
         print('STATISTICAL VOLATILITY')
         print(data.head())
